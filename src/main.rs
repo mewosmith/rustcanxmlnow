@@ -1,224 +1,91 @@
 use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
+use std::path::Path;
 use strong_xml::{XmlRead, XmlWrite};
+use walkdir::{DirEntry, WalkDir};
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "macros")]
-struct Macros {
-    #[xml(child = "macro")]
-    macrochild: Option<MacrosChild>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "macro")]
-struct MacrosChild {
-    #[xml(attr = "name")]
-    name: Option<String>,
-    #[xml(attr = "class")]
-    class: Option<String>,
-    #[xml(child = "component")]
-    component: Option<Component>,
-    #[xml(child = "properties")]
-    properties: Option<Properties>,
-    #[xml(child = "connections")]
-    connections: Option<Connections>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "component")]
-struct Component {
-    #[xml(attr = "ref")]
-    reference: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "properties")]
-struct Properties {
-    #[xml(child = "identification")]
-    identification: Vec<Identification>,
-    #[xml(child = "software")]
-    software: Vec<Software>,
-    #[xml(child = "explosiondamage")]
-    explosion: Vec<Explosion>,
-    #[xml(child = "storage")]
-    storage: Vec<Storage>,
-    #[xml(child = "hull")]
-    hull: Vec<Hull>,
-    #[xml(child = "secrecy")]
-    secrecy: Vec<Secrecy>,
-    #[xml(child = "purpose")]
-    purpose: Vec<Purpose>,
-    #[xml(child = "people")]
-    people: Vec<People>,
-    #[xml(child = "physics")]
-    physics: Vec<Physics>,
-    #[xml(child = "thruster")]
-    thruster: Vec<Thruster>,
-    #[xml(child = "ship")]
-    ship: Vec<Ship>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "explosiondamage")]
-struct Explosion {
-    #[xml(attr = "value")]
-    explosion: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "storage")]
-struct Storage {
-    #[xml(attr = "unit")]
-    unit: Option<String>,
-    #[xml(attr = "missile")]
-    missile: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "hull")]
-struct Hull {
-    #[xml(attr = "max")]
-    max: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "secrecy")]
-struct Secrecy {
-    #[xml(attr = "level")]
-    level: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "purpose")]
-struct Purpose {
-    #[xml(attr = "primary")]
-    primary: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "people")]
-struct People {
-    #[xml(attr = "capacity")]
-    capacity: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "physics")]
-struct Physics {
-    #[xml(child = "inertia")]
-    inertia: Option<Inertia>,
-    #[xml(child = "drag")]
-    drag: Option<Drag>,
-    #[xml(attr = "mass")]
-    mass: Option<String>,
-}
-
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "inertia")]
-struct Inertia {
-    #[xml(attr = "pitch")]
-    pitch: Option<String>,
-    #[xml(attr = "yaw")]
-    yaw: Option<String>,
-    #[xml(attr = "roll")]
-    roll: Option<String>,
-}
-
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "drag")]
-struct Drag {
-    #[xml(attr = "forward")]
-    forward: Option<String>,
-    #[xml(attr = "reverse")]
-    reverse: Option<String>,
-    #[xml(attr = "horizontal")]
-    horizontal: Option<String>,
-    #[xml(attr = "vertical")]
-    vertical: Option<String>,
-    #[xml(attr = "pitch")]
-    pitch: Option<String>,
-    #[xml(attr = "yaw")]
-    yaw: Option<String>,
-    #[xml(attr = "roll")]
-    roll: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "thruster")]
-struct Thruster {
-    #[xml(attr = "tags")]
-    tags: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "ship")]
-struct Ship {
-    #[xml(attr = "type")]
-    shiptype: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "software")]
-struct Software {
-    #[xml(child = "software")]
-    software: Vec<SoftwareWares>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "software")]
-struct SoftwareWares {
-    #[xml(attr = "software")]
-    software: Option<String>,
-    #[xml(attr = "compatible")]
-    compatible: Option<String>,
-    #[xml(attr = "default")]
-    default: Option<String>,
-    #[xml(attr = "ware")]
-    ware: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "identification")]
-struct Identification {
-    #[xml(attr = "name")]
-    name: Option<String>,
-    #[xml(attr = "basename")]
-    basename: Option<String>,
-    #[xml(attr = "description")]
-    description: Option<String>,
-    #[xml(attr = "variation")]
-    variation: Option<String>,
-    #[xml(attr = "shortvariation")]
-    shortvariation: Option<String>,
-    #[xml(attr = "icon")]
-    icon: Option<String>,
-    #[xml(attr = "unique")]
-    unique: Option<String>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "connections")]
-struct Connections {
-    #[xml(child = "connection")]
-    connection: Vec<Connection>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "connection")]
-struct Connection {
-    #[xml(attr = "ref")]
-    refer: Option<String>,
-    #[xml(child = "macro")]
-    macroref: Option<MacroRef>,
-}
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
-#[xml(tag = "macro")]
-struct MacroRef {
-    #[xml(attr = "ref")]
-    refer: Option<String>,
-    #[xml(attr = "connection")]
-    connection: Option<String>,
-}
+mod macro_structs;
+use macro_structs::Macros;
+use roxmltree::Document;
 fn main() {
-    let x = Macros::from_str(
-        &fs::read_to_string(
-            "D:/x4_extract_split/assets/units/size_xl/macros/ship_arg_xl_builder_01_a_macro.xml",
-        )
-        .unwrap(),
-    )
-    .unwrap();
-    println!("{:#?}", x);
 
-    let y = x.to_string().unwrap();
-    println!("{:#?}", y);
-    write(y).expect("failed to write")
+    run_walk_and_transform("D:/x4_extract_split/assets/units/size_s");
+    run_walk_and_transform("D:/x4_extract_split/assets/units/size_m");
+    run_walk_and_transform("D:/x4_extract_split/assets/units/size_l");
+    run_walk_and_transform("D:/x4_extract_split/assets/units/size_xl");
 }
-fn write(s: String) -> std::io::Result<()> {
-    let mut file = File::create("X:/Rust Projects/round20ofwillitparse/testresults/test.xml")?;
+fn run_walk_and_transform(path: &str) {
+    let walker = WalkDir::new(path).into_iter();
+    for entry in walker.filter_entry(|e| !is_hidden(e)) {
+        let unwrapped_entry = entry.expect("unwrap entry");
+        let path = unwrapped_entry.path();
+        if !path.is_dir() {
+            parse(path)
+        }
+    }
+}
+
+fn parse(path: &Path) {
+    if let Ok(original_string) = fs::read_to_string(path) {
+        let macro_struct = Macros::from_str(&original_string);
+        if let Ok(x) = macro_struct {
+            let new_string = x.to_string().expect("create xml");
+            let doc_orig = Document::parse(original_string.as_str()).expect("parse1");
+            let doc_new = Document::parse(new_string.as_str()).expect("parse2");
+            println!("{:?}", path);
+            // println!("{:#?}", original_string);
+            // println!("{:#?}", new_string);
+            compare_docs(doc_orig, doc_new);
+            write(new_string, path).expect("failed to write")
+        }
+    }
+}
+
+fn compare_docs(doc_orig: Document, doc_new: Document) {
+    // collect the node names and the attr names into lists and compare the lists to see if one contains the other
+    let mut o_node_names: Vec<String> = vec![];
+    let mut o_node_attr_names: Vec<String> = vec![];
+    let mut n_node_names: Vec<String> = vec![];
+    let mut n_node_attr_names: Vec<String> = vec![];
+    for o_node in doc_orig.descendants() {
+        o_node_names.push(o_node.tag_name().name().to_owned());
+        for o_attr in o_node.attributes() {
+            o_node_attr_names.push(o_attr.name().to_owned())
+        }
+    }
+    for n_node in doc_new.descendants() {
+        n_node_names.push(n_node.tag_name().name().to_owned());
+        for n_attr in n_node.attributes() {
+            n_node_attr_names.push(n_attr.name().to_owned())
+        }
+    }
+    for o_name in o_node_names.iter() {
+        if !n_node_names.contains(o_name) {
+            println!("missing node: {}", o_name)
+        }
+    }
+    for o_name in o_node_attr_names.iter() {
+        if !n_node_attr_names.contains(o_name) {
+            println!("missing attr: {}", o_name)
+        }
+    }
+}
+
+fn is_hidden(entry: &DirEntry) -> bool {
+    entry
+        .file_name()
+        .to_str()
+        .map(|s| s.starts_with("."))
+        .unwrap_or(false)
+}
+
+fn write(s: String, path: &Path) -> std::io::Result<()> {
+    let out_path = path.strip_prefix("D:/x4_extract_split/assets/").unwrap();
+    let final_out = Path::new("X:/Rust Projects/round20ofwillitparse/testresults").join(out_path);
+    let parent = final_out.parent().unwrap();
+    fs::create_dir_all(&parent).expect("here");
+    let mut file = File::create(final_out)?;
     file.write_all(s.as_bytes())?;
     Ok(())
 }
