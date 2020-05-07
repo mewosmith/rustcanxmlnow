@@ -8,6 +8,9 @@ use walkdir::{DirEntry, WalkDir};
 
 mod macro_structs;
 use macro_structs::{Macros, Properties};
+#[macro_use]
+mod badname_macro;
+
 struct Transforms {
     class: Class,
     vars: Vec<Transform>,
@@ -87,13 +90,18 @@ fn transform(macro_struct: &mut Macros, transforms: &Transforms) -> String {
     for trans in transforms.vars.iter() {
         match trans.val {
             SelectedValue::Hull => {
-                if let Some(c) = macro_struct.macrochild.properties.hull.as_mut() {
-                    if let Some(orig) = c.max.as_mut() {
-                        if let Ok(orig) = orig.parse::<f32>() {
-                            c.max.replace((orig * trans.scaler).to_string());
-                        }
-                    }
-                }
+                // if let Some(c) = macro_struct.macrochild.properties.hull.as_mut() {
+                //     if let Some(orig) = c.max.as_mut() {
+                //         if let Ok(orig) = orig.parse::<f32>() {
+                //             c.max.replace((orig * trans.scaler).to_string());
+                //         }
+                //     }
+                // }
+          
+                 badname1!(hull, badname2!(max))
+
+            // badname2!(max);
+            // badname!(hull, max)
             }
             SelectedValue::Missile => {
                 if let Some(c) = macro_struct.macrochild.properties.storage.as_mut() {
@@ -176,6 +184,9 @@ fn write(s: String, path: &Path) -> std::io::Result<()> {
     file.write_all(s.as_bytes())?;
     Ok(())
 }
+
+
+
 
 // match trans.val {
 //             SelectedValue::Hull => {
