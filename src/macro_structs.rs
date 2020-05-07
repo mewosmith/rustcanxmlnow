@@ -1,12 +1,12 @@
 use strong_xml::{XmlRead, XmlWrite};
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "macros")]
 pub struct Macros {
     #[xml(child = "macro")]
-    pub macrochild: Option<MacrosChild>,
+    pub macrochild: MacrosChild,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "macro")]
 pub struct MacrosChild {
     #[xml(attr = "name")]
@@ -16,19 +16,19 @@ pub struct MacrosChild {
     #[xml(child = "component")]
     pub component: Option<Component>,
     #[xml(child = "properties")]
-    pub properties: Option<Properties>,
+    pub properties: Properties,
     #[xml(child = "connections")]
     pub connections: Option<Connections>,
      #[xml(attr = "alias")]
     pub alias: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "component")]
 pub struct Component {
     #[xml(attr = "ref")]
     pub reference: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "properties")]
 pub struct Properties {
     #[xml(child = "identification")]
@@ -38,21 +38,21 @@ pub struct Properties {
     #[xml(child = "explosiondamage")]
     pub explosion: Vec<ExplosionDam>,
     #[xml(child = "storage")]
-    pub storage: Vec<Storage>,
+    pub storage: Option<Storage>,
     #[xml(child = "hull")]
-    pub hull: Vec<Hull>,
+    pub hull: Option<Hull>,
     #[xml(child = "secrecy")]
-    pub secrecy: Vec<Secrecy>,
+    pub secrecy: Option<Secrecy>,
     #[xml(child = "purpose")]
-    pub purpose: Vec<Purpose>,
+    pub purpose: Option<Purpose>,
     #[xml(child = "people")]
-    pub people: Vec<People>,
+    pub people: Option<People>,
     #[xml(child = "physics")]
-    pub physics: Vec<Physics>,
+    pub physics: Option<Physics>,
     #[xml(child = "thruster")]
-    pub thruster: Vec<Thruster>,
+    pub thruster: Option<Thruster>,
     #[xml(child = "ship")]
-    pub ship: Vec<Ship>,
+    pub ship: Option<Ship>,
     #[xml(child = "loadouts")]
     pub loadouts: Option<Loadouts>,
     #[xml(child = "sound_occlusion")]
@@ -80,37 +80,37 @@ pub struct Properties {
     #[xml(child = "wall")]
     pub wall: Option<Wall>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "wall")]
 pub struct Wall {
     #[xml(attr = "opaque")]
     pub opaque: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "gatherrate")]
 pub struct GatherRate {
     #[xml(attr = "gas")]
     pub gas: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "storage")]
 pub struct StorageAmnt {
     #[xml(attr = "countermeasure")]
     pub countermeasure: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "rotationspeed")]
 pub struct Rotationspeed {
     #[xml(attr = "max")]
     pub max: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "rotationacceleration")]
 pub struct Rotationacceleration {
     #[xml(attr = "max")]
     pub max: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "enginearticulation")]
 pub struct Enginearticulation {
     #[xml(attr = "y")]
@@ -118,44 +118,44 @@ pub struct Enginearticulation {
     #[xml(attr = "z")]
     pub z: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "docksize")]
 pub struct Docksize {
     #[xml(attr = "tag")]
     pub tag: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "effects")]
 pub struct Effects {
     #[xml(child = "explosion")]
     pub effects: Option<Explosion>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "explosion")]
 pub struct Explosion {
     #[xml(attr = "ref")]
     pub refexplo: Option<String>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "capture")]
 pub struct Capture {
     #[xml(attr = "allow")]
     pub allow: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "sounds")]
 pub struct Sounds {
     #[xml(child = "shipdetail")]
     pub shipdetail: Option<Shipdetail>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "shipdetail")]
 pub struct Shipdetail {
     #[xml(attr = "ref")]
     pub shipdetailref: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "cargo")]
 pub struct Cargo {
     #[xml(attr = "max")]
@@ -163,19 +163,19 @@ pub struct Cargo {
         #[xml(attr = "tags")]
     pub tags: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "sound_occlusion")]
 pub struct SoundOccu {
     #[xml(attr = "inside")]
     pub inside: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "loadouts")]
 pub struct Loadouts {
     #[xml(child = "loadout")]
     pub loadouts: Option<Loadout>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "loadout")]
 pub struct Loadout {
     #[xml(child = "macros")]
@@ -189,19 +189,19 @@ pub struct Loadout {
     #[xml(attr = "id")]
     pub id: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "virtualmacros")]
 pub struct VirtualMacros {
     #[xml(child = "virtualmacro")]
     pub thruster: Option<VirtualMacro>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "virtualmacro")]
 pub struct VirtualMacro {
     #[xml(attr = "macro")]
     pub virtualmacromacro: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "ammunition")]
 pub struct LoadoutAmmo {
     #[xml(child = "ammunition")]
@@ -209,7 +209,7 @@ pub struct LoadoutAmmo {
     #[xml(child = "turrets")]
     pub turrets: Vec<LoadoutTurrets>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "ammunition")]
 pub struct Ammunition {
     #[xml(attr = "macro")]
@@ -223,7 +223,7 @@ pub struct Ammunition {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "groups")]
 pub struct LoadoutGroups {
     #[xml(child = "shields")]
@@ -231,7 +231,7 @@ pub struct LoadoutGroups {
     #[xml(child = "turrets")]
     pub turrets: Vec<LoadoutTurrets>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "shields")]
 pub struct LoadoutShields {
     #[xml(attr = "macro")]
@@ -249,7 +249,7 @@ pub struct LoadoutShields {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "turrets")]
 pub struct LoadoutTurrets {
     #[xml(attr = "macro")]
@@ -267,7 +267,7 @@ pub struct LoadoutTurrets {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "macros")]
 pub struct LoadoutMacros {
     #[xml(child = "weapon")]
@@ -281,7 +281,7 @@ pub struct LoadoutMacros {
     #[xml(attr = "id")]
     pub id: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "turret")]
 pub struct LoadoutTurret {
     #[xml(attr = "macro")]
@@ -291,7 +291,7 @@ pub struct LoadoutTurret {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "weapon")]
 pub struct LoadoutWeapon {
     #[xml(attr = "macro")]
@@ -301,7 +301,7 @@ pub struct LoadoutWeapon {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "engine")]
 pub struct LoadoutEngine {
     #[xml(attr = "macro")]
@@ -311,7 +311,7 @@ pub struct LoadoutEngine {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "shield")]
 pub struct LoadoutShield {
     #[xml(attr = "macro")]
@@ -321,7 +321,7 @@ pub struct LoadoutShield {
     #[xml(attr = "optional")]
     pub optional: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "explosiondamage")]
 pub struct ExplosionDam {
     #[xml(attr = "value")]
@@ -332,7 +332,7 @@ pub struct ExplosionDam {
     pub hull: Option<String>,
     
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "storage")]
 pub struct Storage {
     #[xml(attr = "unit")]
@@ -342,7 +342,7 @@ pub struct Storage {
     #[xml(attr = "countermeasure")]
     pub countermeasure: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "hull")]
 pub struct Hull {
     #[xml(attr = "max")]
@@ -350,25 +350,25 @@ pub struct Hull {
     #[xml(attr = "integrated")]
     pub integrated: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "secrecy")]
 pub struct Secrecy {
     #[xml(attr = "level")]
     pub level: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "purpose")]
 pub struct Purpose {
     #[xml(attr = "primary")]
     pub primary: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "people")]
 pub struct People {
     #[xml(attr = "capacity")]
     pub capacity: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "physics")]
 pub struct Physics {
     #[xml(child = "inertia")]
@@ -379,7 +379,7 @@ pub struct Physics {
     pub mass: Option<String>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "inertia")]
 pub struct Inertia {
     #[xml(attr = "pitch")]
@@ -390,7 +390,7 @@ pub struct Inertia {
     pub roll: Option<String>,
 }
 
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "drag")]
 pub struct Drag {
     #[xml(attr = "forward")]
@@ -408,25 +408,25 @@ pub struct Drag {
     #[xml(attr = "roll")]
     pub roll: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "thruster")]
 pub struct Thruster {
     #[xml(attr = "tags")]
     pub tags: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "ship")]
 pub struct Ship {
     #[xml(attr = "type")]
     pub shiptype: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "software")]
 pub struct Software {
     #[xml(child = "software")]
     pub software: Vec<SoftwareWares>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "software")]
 pub struct SoftwareWares {
     #[xml(attr = "software")]
@@ -438,7 +438,7 @@ pub struct SoftwareWares {
     #[xml(attr = "ware")]
     pub ware: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "identification")]
 pub struct Identification {
     #[xml(attr = "name")]
@@ -460,13 +460,13 @@ pub struct Identification {
     #[xml(attr = "unit")]
     pub unit: Option<String>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "connections")]
 pub struct Connections {
     #[xml(child = "connection")]
     pub connection: Vec<Connection>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "connection")]
 pub struct Connection {
     #[xml(attr = "ref")]
@@ -474,7 +474,7 @@ pub struct Connection {
     #[xml(child = "macro")]
     pub macroref: Option<MacroRef>,
 }
-#[derive(XmlWrite, XmlRead, PartialEq, Debug)]
+#[derive(XmlWrite, XmlRead, PartialEq, Debug, Clone)]
 #[xml(tag = "macro")]
 pub struct MacroRef {
     #[xml(attr = "ref")]
